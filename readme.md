@@ -1,0 +1,1 @@
+# Toolset for building and deploying a CMaNGOS-classic server
