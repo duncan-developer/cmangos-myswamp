@@ -1,13 +1,13 @@
 services:
-  database:
-    image: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=cmangos
-      - MYSQL_USER=cmangos
-      - MYSQL_PASSWORD=cmangos
-    expose:
-      - 3306
+  # database:
+  #   image: mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=cmangos
+  #     - MYSQL_USER=cmangos
+  #     - MYSQL_PASSWORD=cmangos
+  #   expose:
+  #     - 3306
     # volumes:
     #   - type: bind
     #     source: ./data/database/mysql
@@ -15,13 +15,14 @@ services:
   mangos-realm:
     build: 
       context: .
+      target: environment
       dockerfile: Dockerfile
     # depends_on:
     #   - database
-    volumes:
-      - type: bind
-        source: ./run
-        target: /home/cmangos/run
+    # volumes:
+    #   - type: bind
+    #     source: ./run
+    #     target: /home/cmangos/run
     ports:
       - 8085:8085
   # mangos-auth:

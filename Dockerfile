@@ -43,6 +43,12 @@ RUN chmod +x ${SCRIPT_DIR}/compile-mangos.sh
 WORKDIR ${BUILD_DIR}
 RUN ${SCRIPT_DIR}/compile-mangos.sh ${RUN_DIR}
 
-# FROM compiler AS environment
+# Rename config files to correct name
+WORKDIR ${RUN_DIR}/etc
+RUN cp mangosd.conf.dist mangosd.conf && \
+cp realmd.conf.dist realmd.conf && \
+cp anticheat.conf.dist anticheat.conf
 
-# ENTRYPOINT [ "exec", "tail", "/dev/null" ]
+FROM compiler AS environment
+
+ENTRYPOINT [ "sleep", "1000"]
