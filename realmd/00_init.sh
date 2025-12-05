@@ -156,7 +156,7 @@ function create_db_config() {
     config+=("CORE_PATH=\"/opt/cmangos\"")
     config+=("LOCALES=\"NO\"")
     config+=("FORCE_WAIT=\"NO\"")
-    config+=("AHBOT=\"YES\"")
+    config+=("AHBOT=\"NO\"")
 
     for line in "${config[@]}"; do
         echo $line
@@ -218,4 +218,3 @@ rm -f /opt/cmangos/etc/.initialized
 # Run CMaNGOS
 cd /opt/cmangos/bin/
 ./realmd
-exit 0;

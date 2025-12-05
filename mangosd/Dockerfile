@@ -47,6 +47,12 @@ COPY --from=builder /opt/src/database /opt/database
 COPY InstallFullDB.diff /opt/database/InstallFullDB.diff
 RUN dos2unix /opt/database/InstallFullDB.diff
 
+# enables legacy support on openssl3 to stop server from crashing on startup
+COPY openssl.cnf /etc/ssl/temp_openssl.cnf
+RUN dos2unix /etc/ssl/temp_openssl.cnf
+RUN mv -f /etc/ssl/temp_openssl.cnf /etc/ssl/openssl.cnf
+
+
 VOLUME [ "/opt/cmangos/etc" ]
 
 # Copy over init scripts, remove dos line endings and make them executable

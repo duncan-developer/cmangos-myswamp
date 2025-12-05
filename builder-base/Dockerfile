@@ -1,4 +1,4 @@
-FROM buildpack-deps:stable
+FROM buildpack-deps:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 

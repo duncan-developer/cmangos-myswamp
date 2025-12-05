@@ -5,6 +5,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASS:-mangos}"
       MYSQL_USER: "${DB_USER:-mangos}"
       MYSQL_PASSWORD: "${DB_PASS:-mangos}"
+      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASS:-mangos}"
     ports:
       - "${DB_PORT:-3306}:3306"
     volumes:
@@ -14,9 +15,8 @@ services:
     build: 
       context: ./realmd
       args:
-        - CORE_COMMIT_HASH=776b758
         - BUILD_PLAYERBOT=OFF
-        - BUILD_AHBOT=ON
+        - BUILD_AHBOT=OFF
         - BUILD_METRICS=OFF
     depends_on:
       - database
@@ -36,16 +36,13 @@ services:
     build: #./mangosd
       context: ./mangosd
       args:
-        - CORE_COMMIT_HASH=776b758
         - BUILD_PLAYERBOT=OFF
-        - BUILD_AHBOT=ON
+        - BUILD_AHBOT=OFF
         - BUILD_METRICS=OFF
-    stdin_open: TRUE
+    depends_on:
+      - database
+      - realmd
     tty: TRUE
-    entrypoint: /bin/sh
-    # depends_on:
-    #   - database
-    #   - realmd
     environment:
       DB_HOST: "${DB_HOST:-database}"
       DB_PORT: "${DB_PORT:-3306}"
