@@ -1,5 +1,0 @@
-RUNDIR=$1
-
-cmake ../mangos -DCMAKE_INSTALL_PREFIX=${RUNDIR} -DBUILD_AHBOT=ON -DPCH=1 -DDEBUG=0
-make
-make install

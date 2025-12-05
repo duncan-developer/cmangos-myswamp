@@ -1,5 +1,4 @@
-ARG REGISTRY=registry.int.jrtashjian.com
-FROM ${REGISTRY}/jrtashjian/cmangos-docker/builder-base:latest AS builder
+FROM cmangos-builder:latest AS builder
 
 ARG CMANGOS_CORE=classic
 ARG CORE_COMMIT_HASH=HEAD
@@ -26,15 +25,10 @@ RUN mkdir -p /opt/cmangos/sql && \
 # Remove .git dir to minimize size
 RUN rm -rfv /opt/src/database/.git
 
-FROM bitnami/minideb:latest
+FROM debian:latest
 
 ARG CMANGOS_CORE
 ENV CMANGOS_CORE=${CMANGOS_CORE}
-
-LABEL org.opencontainers.image.title="realmd-${CMANGOS_CORE}"
-LABEL org.opencontainers.image.description="Containerized CMaNGOS Login Server"
-LABEL org.opencontainers.image.authors="jrtashjian"
-LABEL org.opencontainers.image.licenses="GPL-2.0-only"
 
 ARG CMANGOS_CORE
 ENV CMANGOS_CORE=$CMANGOS_CORE
@@ -45,18 +39,21 @@ RUN apt update; \
 		libmariadb3 \
 		wget \
 		unzip \
+		dos2unix \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/cmangos /opt/cmangos
 COPY --from=builder /opt/src/database /opt/database
 COPY InstallFullDB.diff /opt/database/InstallFullDB.diff
+RUN dos2unix /opt/database/InstallFullDB.diff
 
 VOLUME [ "/opt/cmangos/etc" ]
 
-# Copy over init scripts and make them executable
+# Copy over init scripts, remove dos line endings and make them executable
 COPY 00_init.sh /00_init.sh
 COPY wait-for-it.sh /wait-for-it.sh
+RUN dos2unix /00_init.sh && dos2unix /wait-for-it.sh
 RUN chmod +x /00_init.sh && chmod +x /wait-for-it.sh
 
 # Add Tini
