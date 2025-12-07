@@ -5,7 +5,7 @@ ARG CORE_COMMIT_HASH=HEAD
 ARG DB_COMMIT_HASH=HEAD
 
 RUN mkdir -p /opt/src && \
-	git clone https://github.com/cmangos/mangos-${CMANGOS_CORE}.git /opt/src/cmangos && \
+	git clone https://github.com/davidonete/mangos-${CMANGOS_CORE}.git -b modules /opt/src/cmangos && \
 	if [ "$CORE_COMMIT_HASH" != "HEAD" ]; then cd /opt/src/cmangos; git checkout ${CORE_COMMIT_HASH}; fi
 
 RUN mkdir -p /opt/src && \
@@ -14,7 +14,10 @@ RUN mkdir -p /opt/src && \
 
 RUN mkdir -p /opt/src/cmangos/build && \
 	cd /opt/src/cmangos/build && \
-	cmake /opt/src/cmangos -DCMAKE_INSTALL_PREFIX=/opt/cmangos -DBUILD_GAME_SERVER=OFF && \
+	cmake /opt/src/cmangos \
+	-DCMAKE_INSTALL_PREFIX=/opt/cmangos \
+	-DBUILD_GAME_SERVER=OFF \
+	-DBUILD_MODULES=ON && \
 	make -j $(nproc) && make install
 
 # Copy config and sql scripts
@@ -29,9 +32,6 @@ FROM debian:latest
 
 ARG CMANGOS_CORE
 ENV CMANGOS_CORE=${CMANGOS_CORE}
-
-ARG CMANGOS_CORE
-ENV CMANGOS_CORE=$CMANGOS_CORE
 
 RUN apt update; \
 	apt install -y \

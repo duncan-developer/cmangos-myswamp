@@ -7,8 +7,9 @@ ARG BUILD_PLAYERBOT=OFF
 ARG BUILD_AHBOT=OFF
 ARG BUILD_METRICS=OFF
 
+
 RUN mkdir -p /opt/src && \
-	git clone https://github.com/cmangos/mangos-${CMANGOS_CORE}.git /opt/src/cmangos && \
+	git clone https://github.com/davidonete/mangos-${CMANGOS_CORE}.git -b modules /opt/src/cmangos && \
 	if [ "$CORE_COMMIT_HASH" != "HEAD" ]; then cd /opt/src/cmangos; git checkout ${CORE_COMMIT_HASH}; fi
 
 RUN mkdir -p /opt/src && \
@@ -17,7 +18,13 @@ RUN mkdir -p /opt/src && \
 
 RUN mkdir -p /opt/src/cmangos/build && \
 	cd /opt/src/cmangos/build && \
-	cmake /opt/src/cmangos -DCMAKE_INSTALL_PREFIX=/opt/cmangos -DBUILD_LOGIN_SERVER=OFF -DBUILD_PLAYERBOT=${BUILD_PLAYERBOT} -DBUILD_AHBOT=${BUILD_AHBOT} -DBUILD_METRICS=${BUILD_METRICS} && \
+	cmake /opt/src/cmangos -DCMAKE_INSTALL_PREFIX=/opt/cmangos \
+	-DBUILD_LOGIN_SERVER=OFF \
+	-DBUILD_PLAYERBOT=${BUILD_PLAYERBOT} \
+	-DBUILD_AHBOT=${BUILD_AHBOT} \
+	-DBUILD_METRICS=${BUILD_METRICS} \
+	-DBUILD_MODULES=ON \
+	&& \
 	make -j $(nproc) && make install
 
 # Copy config and sql scripts
