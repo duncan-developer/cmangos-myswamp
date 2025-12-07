@@ -50,6 +50,7 @@ services:
       DB_PASS: "${DB_PASS:-mangos}"
       DB_ROOT_PASS: "${DB_ROOT_PASS:-mangos}"
       REALM_NAME: "MY SWAMP"
+      REALM_HOST: 127.0.0.1
       INSTALL_FULL_DB: "TRUE"
     # env_file:
     #   - ./.env
@@ -59,12 +60,3 @@ services:
       - "./data/mangosd_etc:/opt/cmangos/etc"
       - "/etc/localtime:/etc/localtime:ro"
       - "./extracted-data:/opt/cmangos-data:ro"
-  phpmyadmin:
-    image: phpmyadmin
-    ports:
-      - 8080:80
-    environment:
-      - PMA_ARBITRARY=0
-      - PMA_HOST=database
-    depends_on:
-      - database
