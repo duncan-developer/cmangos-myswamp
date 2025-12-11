@@ -247,6 +247,7 @@ if [ $? -eq 0 ]; then
 	cd /opt/database
 	if [ "$INSTALL_FULL_DB" = TRUE ]; then
 		/opt/database/CustomInstallFullDB.sh /opt/database/world_db.config CONTENT
+		sql_file_exec "WORLD_DB" /opt/modules/dualspec/sql/install/world/world.sql "Installing dualspec into world database"
 	else
 		/opt/database/CustomInstallFullDB.sh /opt/database/world_db.config WORLD
 	fi
@@ -272,6 +273,7 @@ if [ $? -eq 0 ]; then
 
 	cd /opt/database
 	/opt/database/CustomInstallFullDB.sh /opt/database/characters_db.config CHARACTERS
+	sql_file_exec "CHARACTERS_DB" /opt/modules/dualspec/sql/install/characters/characters.sql "Installing dualspec into characters database"
 else
 	echo "[ERR] Timeout while waiting for ${CHARACTERS_DB_HOST}!";
 	exit 1;

@@ -17,7 +17,9 @@ RUN mkdir -p /opt/src/cmangos/build && \
 	cmake /opt/src/cmangos \
 	-DCMAKE_INSTALL_PREFIX=/opt/cmangos \
 	-DBUILD_GAME_SERVER=OFF \
-	-DBUILD_MODULES=ON && \
+	-DBUILD_MODULES=ON \
+	-DBUILD_MODULE_DUALSPEC=ON \
+	&& \
 	make -j $(nproc) && make install
 
 # Copy config and sql scripts

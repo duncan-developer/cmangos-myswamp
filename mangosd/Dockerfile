@@ -24,6 +24,7 @@ RUN mkdir -p /opt/src/cmangos/build && \
 	-DBUILD_AHBOT=${BUILD_AHBOT} \
 	-DBUILD_METRICS=${BUILD_METRICS} \
 	-DBUILD_MODULES=ON \
+	-DBUILD_MODULE_DUALSPEC=ON \
 	&& \
 	make -j $(nproc) && make install
 
@@ -50,9 +51,13 @@ RUN apt update; \
 	; rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/cmangos /opt/cmangos
+COPY --from=builder /opt/src/cmangos/src/modules /opt/modules
+# COPY --from=builder /opt/src/cmangos/modules/dualspec/src/dualspec.conf.dist.in /opt/cmangos/etc/dualspec.conf
 COPY --from=builder /opt/src/database /opt/database
 COPY InstallFullDB.diff /opt/database/InstallFullDB.diff
 RUN dos2unix /opt/database/InstallFullDB.diff
+
+RUN cp /opt/modules/dualspec/src/dualspec.conf.dist.in /opt/cmangos/etc/dualspec.conf
 
 # enables legacy support on openssl3 to stop server from crashing on startup
 COPY openssl.cnf /etc/ssl/temp_openssl.cnf
@@ -64,9 +69,10 @@ VOLUME [ "/opt/cmangos/etc" ]
 
 # Copy over init scripts, remove dos line endings and make them executable
 COPY 00_init.sh /00_init.sh
+COPY install_module_database.sh /install_module_database.sh
 COPY wait-for-it.sh /wait-for-it.sh
-RUN dos2unix /00_init.sh && dos2unix /wait-for-it.sh
-RUN chmod +x /00_init.sh && chmod +x /wait-for-it.sh
+RUN dos2unix /00_init.sh && dos2unix /wait-for-it.sh && dos2unix /install_module_database.sh
+RUN chmod +x /00_init.sh && chmod +x /wait-for-it.sh && chmod +x /install_module_database.sh
 
 # Add Tini
 ENV TINI_VERSION=v0.19.0
