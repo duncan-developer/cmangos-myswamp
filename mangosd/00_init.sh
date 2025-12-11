@@ -273,7 +273,10 @@ if [ $? -eq 0 ]; then
 
 	cd /opt/database
 	/opt/database/CustomInstallFullDB.sh /opt/database/characters_db.config CHARACTERS
-	sql_file_exec "CHARACTERS_DB" /opt/modules/dualspec/sql/install/characters/characters.sql "Installing dualspec into characters database"
+		cd /opt/database
+	if [ "$INSTALL_FULL_DB" = TRUE ]; then
+		sql_file_exec "CHARACTERS_DB" /opt/modules/dualspec/sql/install/characters/characters.sql "Installing dualspec into characters database"
+	fi
 else
 	echo "[ERR] Timeout while waiting for ${CHARACTERS_DB_HOST}!";
 	exit 1;
@@ -316,6 +319,7 @@ update_config MANGOSD_ /opt/cmangos/etc/mangosd.conf
 update_config AHBOT_ /opt/cmangos/etc/ahbot.conf
 update_config ANTICHEAT_ /opt/cmangos/etc/anticheat.conf
 update_config PLAYERBOT_ /opt/cmangos/etc/playerbot.conf
+update_config DUALSPEC_ /opt/cmangos/etc/dualspec.conf
 
 # Ensure LogsDir exists
 mkdir -p $MANGOSD_LOGSDIR

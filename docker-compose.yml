@@ -12,7 +12,7 @@ services:
       - "./data/database:/var/lib/mysql"
 
   realmd:
-    build: 
+    build:
       context: ./realmd
       args:
         - BUILD_PLAYERBOT=OFF
@@ -33,7 +33,8 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
 
   mangosd:
-    build: #./mangosd
+    build:
+      #./mangosd
       context: ./mangosd
       args:
         - BUILD_PLAYERBOT=OFF
@@ -51,7 +52,9 @@ services:
       DB_ROOT_PASS: "${DB_ROOT_PASS:-mangos}"
       REALM_NAME: "MY SWAMP"
       REALM_HOST: 127.0.0.1
-      INSTALL_FULL_DB: "TRUE"
+      INSTALL_FULL_DB: "FALSE"
+      ANTICHEAT_WARDEN_ENABLE: 0
+      DUALSPEC_ENABLE: 1
     # env_file:
     #   - ./.env
     ports:
@@ -60,3 +63,21 @@ services:
       - "./data/mangosd_etc:/opt/cmangos/etc"
       - "/etc/localtime:/etc/localtime:ro"
       - "./extracted-data:/opt/cmangos-data:ro"
+
+  phpmyadmin:
+
+    image: phpmyadmin
+
+    ports:
+
+      - 8080:80
+
+    environment:
+
+      - PMA_ARBITRARY=0
+
+      - PMA_HOST=database
+
+    depends_on:
+
+      - database
