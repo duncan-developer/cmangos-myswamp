@@ -38,7 +38,7 @@ services:
       context: ./mangosd
       args:
         - BUILD_PLAYERBOT=OFF
-        - BUILD_AHBOT=OFF
+        - BUILD_AHBOT=ON
         - BUILD_METRICS=OFF
     depends_on:
       - database
@@ -55,6 +55,8 @@ services:
       INSTALL_FULL_DB: "FALSE"
       ANTICHEAT_WARDEN_ENABLE: 0
       DUALSPEC_ENABLE: 1
+      BALANCING_ENABLE: 1
+      AHBOT_AuctionHouseBot_Level_DynamicMaxRequired: 1
     # env_file:
     #   - ./.env
     ports:

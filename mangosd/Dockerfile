@@ -25,6 +25,7 @@ RUN mkdir -p /opt/src/cmangos/build && \
 	-DBUILD_METRICS=${BUILD_METRICS} \
 	-DBUILD_MODULES=ON \
 	-DBUILD_MODULE_DUALSPEC=ON \
+	-DBUILD_MODULE_BALANCING=ON \
 	&& \
 	make -j $(nproc) && make install
 
@@ -52,12 +53,12 @@ RUN apt update; \
 
 COPY --from=builder /opt/cmangos /opt/cmangos
 COPY --from=builder /opt/src/cmangos/src/modules /opt/modules
-# COPY --from=builder /opt/src/cmangos/modules/dualspec/src/dualspec.conf.dist.in /opt/cmangos/etc/dualspec.conf
 COPY --from=builder /opt/src/database /opt/database
 COPY InstallFullDB.diff /opt/database/InstallFullDB.diff
 RUN dos2unix /opt/database/InstallFullDB.diff
 
-RUN cp /opt/modules/dualspec/src/dualspec.conf.dist.in /opt/cmangos/etc/dualspec.conf
+RUN cp /opt/modules/dualspec/src/dualspec.conf.dist.in /opt/cmangos/etc/dualspec.conf && \
+cp /opt/modules/balancing/src/balancing.conf.dist.in /opt/cmangos/etc/balancing.conf
 
 # enables legacy support on openssl3 to stop server from crashing on startup
 COPY openssl.cnf /etc/ssl/temp_openssl.cnf

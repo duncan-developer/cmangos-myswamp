@@ -19,6 +19,7 @@ RUN mkdir -p /opt/src/cmangos/build && \
 	-DBUILD_GAME_SERVER=OFF \
 	-DBUILD_MODULES=ON \
 	-DBUILD_MODULE_DUALSPEC=ON \
+	-DBUILD_MODULE_BALANCING=ON \
 	&& \
 	make -j $(nproc) && make install
 

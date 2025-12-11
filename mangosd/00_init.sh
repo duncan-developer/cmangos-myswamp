@@ -248,6 +248,7 @@ if [ $? -eq 0 ]; then
 	if [ "$INSTALL_FULL_DB" = TRUE ]; then
 		/opt/database/CustomInstallFullDB.sh /opt/database/world_db.config CONTENT
 		sql_file_exec "WORLD_DB" /opt/modules/dualspec/sql/install/world/world.sql "Installing dualspec into world database"
+		sql_file_exec "WORLD_DB" /opt/modules/balancing/sql/install/world/world.sql "Installing balancing into world database"
 	else
 		/opt/database/CustomInstallFullDB.sh /opt/database/world_db.config WORLD
 	fi
@@ -320,6 +321,7 @@ update_config AHBOT_ /opt/cmangos/etc/ahbot.conf
 update_config ANTICHEAT_ /opt/cmangos/etc/anticheat.conf
 update_config PLAYERBOT_ /opt/cmangos/etc/playerbot.conf
 update_config DUALSPEC_ /opt/cmangos/etc/dualspec.conf
+update_config BALANCING_ /opt/cmangos/etc/balancing.conf
 
 # Ensure LogsDir exists
 mkdir -p $MANGOSD_LOGSDIR
