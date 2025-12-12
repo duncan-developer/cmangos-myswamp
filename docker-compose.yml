@@ -53,12 +53,11 @@ services:
       REALM_NAME: "MY SWAMP"
       REALM_HOST: 127.0.0.1
       INSTALL_FULL_DB: "FALSE"
-      ANTICHEAT_WARDEN_ENABLE: 0
       DUALSPEC_ENABLE: 1
       BALANCING_ENABLE: 1
       AHBOT_AuctionHouseBot_Level_DynamicMaxRequired: 1
-    # env_file:
-    #   - ./.env
+    env_file:
+      - ./.env
     ports:
       - 8085:8085
     volumes:
